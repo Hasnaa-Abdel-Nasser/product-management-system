@@ -1,7 +1,9 @@
-import "./App.css";
-//Product Builder 
+import { Products } from "./components/Products";
+//Product Builder
 function App() {
-  return <></>;
+  return(
+    <Products/>
+  );
 }
 
 export default App;

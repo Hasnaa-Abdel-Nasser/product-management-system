@@ -1,0 +1,22 @@
+.options{
+    cursor: pointer;
+    padding: 8px 12px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    p{
+        color:black;
+    }
+    svg{
+        color: #4338CA
+    }
+}
+.options:hover{
+    background-color: #4338CA;
+    p{
+        color: white
+    }
+    svg{
+        color:white
+    }
+}
