@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 import { Check } from "lucide-react";
 import { categories } from "../../../data/index";
@@ -13,11 +13,6 @@ interface IProps {
 export const Select = ({product,setProduct}:IProps) => {
   const [showCategories, setShowCategories] = useState(false);
   const [data, setData] = useState(product.category);
-
-  useEffect(()=>{
-    setProduct({...product , category:{...data}});
-
-  },[data]);
 
   return (
     <div onMouseLeave={()=>setShowCategories(false)}>
@@ -34,7 +29,11 @@ export const Select = ({product,setProduct}:IProps) => {
         {showCategories && (
           <ul className="absolute overflow-y-auto w-full bg-white rounded-md border-solid border-[1px] shadow-md border-slate-200 py-1 max-h-40">
             {categories.map((option) => (
-              <li key={option.id} className="options" onClick={() =>{ setData({name:option.name , imageURL:option.imageURL}); setShowCategories(false); }}>
+              <li key={option.id} className="options" 
+                  onClick={() =>{ setProduct({...product , category:{name:option.name , imageURL:option.imageURL}});
+                                  setData({name:option.name , imageURL:option.imageURL}); 
+                                  setShowCategories(false); 
+                                  }}>
                 <Category
                   imageURL={option.imageURL}
                   name={option.name}

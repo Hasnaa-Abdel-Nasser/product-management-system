@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { colors } from "../../data";
 import { Circle } from "../ui/Circle";
 import { IProduct } from "../../interfaces";
@@ -13,18 +13,17 @@ export const ColorPicker = ({ product, setProduct }: IProps) => {
 
   const addAndRemoveColor = (color: string) => {
     const findColor = colorsList.findIndex((ele) => ele == color);
+    let colors;
     if (findColor === -1) {
+      colors = [...colorsList, color];
       setColorsList([...colorsList, color]);
     } else {
-      setColorsList(colorsList.filter((_, index) => index !== findColor));
+      colors = colorsList.filter((_, index) => index !== findColor);
+      setColorsList(colors);
     }
-    setProduct({ ...product, colors: colorsList });
+    setProduct({ ...product, colors: colors });
   };
-
-  useEffect(() => {
-    setProduct({ ...product, colors: colorsList });
-  }, [colorsList]);
-
+  
   return (
     <>
       <div className="flex gap-1 flex-wrap pt-3">

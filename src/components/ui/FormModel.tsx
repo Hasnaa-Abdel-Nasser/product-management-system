@@ -1,20 +1,16 @@
 import { IFormModel } from "../../interfaces";
 import { formInputsList } from "../../data";
-import { handleInputChange } from "../../utils";
+import { handleInputChange, initialError, scrollAllowed } from "../../utils";
 import { Input } from "./Input";
 import { Select } from "./Select";
 import { ColorPicker } from "../ColorPicker";
 import { Button } from "./Button";
 import { useState } from "react";
+import { ErrorMessage } from "./ErrorMessage";
 
 
 export const FormModel = ({onSubmit,product,setProduct,open,setOpen,setAllProducts,}: IFormModel) => {
-  const [errors, setErrors] = useState({
-    title: "",
-    description: "",
-    imageURL: "",
-    price: "",
-  });
+  const [errors, setErrors] = useState(initialError());
   return (
     <>
       {formInputsList.map((input) => (
@@ -26,14 +22,10 @@ export const FormModel = ({onSubmit,product,setProduct,open,setOpen,setAllProduc
             name={input.name}
             value={product[input.name]}
             onChange={(event) =>
-              handleInputChange({ product, setProduct, event })
+              handleInputChange({ product, setProduct, event , errors , setErrors })
             }
           />
-          {
-            <p className="text-red-700 font-semibold text-xs pt-1">
-              {errors[input.name]}
-            </p>
-          }
+          <ErrorMessage msg={errors[input.name]}/>
         </div>
       ))}
       <Select product={product} setProduct={setProduct} />
@@ -48,7 +40,7 @@ export const FormModel = ({onSubmit,product,setProduct,open,setOpen,setAllProduc
           Submit
         </Button>
         <Button
-          onClick={() => setOpen(!open)}
+          onClick={() =>{ setOpen(!open); scrollAllowed(false);}}
           className="bg-slate-200 hover:bg-slate-300 text-black"
         >
           Cancel
