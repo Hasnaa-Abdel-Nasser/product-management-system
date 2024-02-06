@@ -1,86 +1,59 @@
 import { useState } from "react";
 import { Button } from "../ui/Button";
 import { Modal } from "../Modal";
-import { IProduct } from "../../interfaces";
 import { productList } from "../../data";
-import {
-  addNewProduct,
-  editProduct,
-  initialProduct,
-  scrollAllowed,
-} from "../../utils";
+import { scrollAllowed } from "../../utils";
 import { FormModel } from "../ui/FormModel";
+import { Toaster } from "react-hot-toast";
 
 export const Products = () => {
-  const [openAddModel, setOpenAddModel] = useState(false);
-  const [openEditModel, setOpenEditModel] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [productIndex, setProductIndex] = useState(-1);
   const [products, setAllProducts] = useState(productList);
-  const [product, setProduct] = useState<IProduct>(initialProduct);
-  
+
+
+  // Open Modal, set new index, and hide scroll bar
+  const handleOnClick = (index: number) => {
+    setOpen(true);
+    scrollAllowed(true);
+    setProductIndex(index);
+  }
+
   return (
     <div className="flex flex-col items-center products">
-      <Button
-        className={"bg-[#4338CA] hover:bg-[#3730A3] my-8"}
-        onClick={() => {
-          setOpenAddModel(true);
-          scrollAllowed(true);
-          setProduct(initialProduct());
-        }}
-      >
+      
+      {/* index is -1, it refers to a new product */}
+      <Button className={"bg-[#4338CA] hover:bg-[#3730A3] my-8"} onClick={() => { handleOnClick(-1) }}>
         Build a Product
       </Button>
 
-      {openAddModel && (
+      {/*Handle Modal To Add and Edit Product*/}
+      {open && (
         <Modal
-          setOpen={setOpenAddModel}
-          title={"ADD A NEW PRODUCT"}
-          open={openAddModel}
+          setOpen={setOpen}
+          open={open}
+          title={productIndex === -1 ? "ADD A NEW PRODUCT" : "EDIT THIS PRODUCT"}
         >
           <FormModel
-            setOpen={setOpenAddModel}
-            open={openAddModel}
-            onSubmit={addNewProduct}
-            product={product}
-            setProduct={setProduct}
+            setOpen={setOpen}
+            open={open}
             setAllProducts={setAllProducts}
+            productIndex={productIndex}
           />
         </Modal>
       )}
 
       {/*Cards*/}
-      {products.map((product) => (
+      {products.map((product, index) => (
         <div className="flex" key={product.id}>
           <p>{product.title}</p>
-          <Button
-            onClick={() => {
-              setProduct(product);
-              setOpenEditModel(true);
-              scrollAllowed(true);
-            }}
-            className={"bg-[#4338CA] hover:bg-[#3730A3]"}
-          >
+          <Button className={"bg-[#4338CA] hover:bg-[#3730A3]"} onClick={() => { handleOnClick(index) }}>
             Edit
           </Button>
         </div>
       ))}
       {/*End Cards*/}
-
-      {openEditModel && (
-        <Modal
-          setOpen={setOpenEditModel}
-          title={"EDIT THIS PRODUCT"}
-          open={openEditModel}
-        >
-          <FormModel
-            setOpen={setOpenEditModel}
-            open={openEditModel}
-            onSubmit={editProduct}
-            product={product}
-            setProduct={setProduct}
-            setAllProducts={setAllProducts}
-          />
-        </Modal>
-      )}
+      <Toaster />
     </div>
   );
 };

@@ -34,26 +34,19 @@ export interface IInputChange {
   setErrors:(val:IError)=>void
 }
 
-export interface INewProduct {
+export interface IProductList {
   product: IProduct;
   setAllProducts: (products: IProduct[]) => void;
-  setErrors: (val: IError) => void;
-  setOpen: (val: boolean) => void;
 }
 
 export interface IFormModel {
-  product: IProduct;
-  setProduct: (products: IProduct) => void;
-  onSubmit: ({
-    product,
-    setAllProducts,
-    setErrors,
-    setOpen,
-  }: INewProduct) => void;
-  setAllProducts: (val: IProduct[]) => void;
   open: boolean;
   setOpen: (open: boolean) => void;
+  setAllProducts: (val: IProduct[]) => void;
+  productIndex: number;
 }
+
+
 export interface IError {
   title: string;
   description: string;
